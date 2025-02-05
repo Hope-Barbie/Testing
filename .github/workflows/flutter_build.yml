@@ -1,0 +1,34 @@
+name: banana_assist_flutter_build
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  FLUTTER_VERSION: 3.24.3
+  DART_VERSION: 3.5.3
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build the app
+        run: flutter build apk
+
+      - name: Use Google Credentials (Example)
+        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
